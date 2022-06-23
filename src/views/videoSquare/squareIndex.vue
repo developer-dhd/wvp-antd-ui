@@ -1,19 +1,6 @@
 <template>
   <div>
-    <a-drawer
-      title="视频列表"
-      placement="right"
-      width="20%"
-      :closable="false"
-      :visible="visible"
-      :after-visible-change="afterVisibleChange"
-      @close="onClose">
-      <device-tree :clickEvent="clickEvent" :contextMenuEvent="null"/>
-      <div class="closeBtn">
-        <a-button type="primary" @click="onClose">关闭</a-button>
-      </div>
-    </a-drawer>
-    <a-card :bordered="false" :body-style="{padding: 0}">
+    <a-card :bordered="false" :body-style="{padding: 0,paddingTop:'1px'}">
       <div slot="title" style="width: 100%; display: inline-flex; align-items: center; justify-content: space-between">
         <div>
           分屏选择：
@@ -31,29 +18,37 @@
           </a-tooltip>
         </div>
         <div>
-          <a-button type="primary" @click="setFullscreen" style="margin-right: 10px">电视墙模式</a-button>
-          <a-button type="primary" @click="showDrawer">视频列表</a-button>
+          <a-button type="primary" @click="setFullscreen">电视墙模式</a-button>
         </div>
       </div>
-      <div ref="fullScreenEl" style="width: 100%; height: 100%;background-color: #FFFFFF">
-        <a-row :gutter="[2,2]" v-for="indexRow in rows" :key="indexRow">
-          <a-col :span="colSpan" v-for="indexCol in cols" :key="indexCol">
-            <div style="width: 100%; height: 100%" @click="getPlayerPos(indexRow, indexCol)">
-              <live-player
-                :video-url="videoUrl['player-'+indexRow + '-' + indexCol]"
-                :class="{playerActive: indexRow===playerRow && indexCol === playerCol}"/>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
+      <a-row :gutter="0">
+        <a-col :span="5">
+          <device-tree :clickEvent="clickEvent" :contextMenuEvent="null"/>
+        </a-col>
+        <a-col :span="19">
+          <div ref="fullScreenEl" style="width: 100%; height: 100%;background-color: #FFFFFF">
+            <a-row :gutter="[2,2]" v-for="indexRow in rows" :key="indexRow">
+              <a-col :span="colSpan" v-for="indexCol in cols" :key="indexCol">
+                <div style="width: 100%; height: 100%" @click="getPlayerPos(indexRow, indexCol)">
+                  <live-player
+                      :video-url="videoUrl['player-'+indexRow + '-' + indexCol]"
+                      :class="{playerActive: indexRow===playerRow && indexCol === playerCol}"
+                      autoplay live fluent stretch/>
+                </div>
+              </a-col>
+            </a-row>
+          </div>
+        </a-col>
+      </a-row>
+
     </a-card>
   </div>
 </template>
 
 <script>
-import DeviceTree from "@/views/device/DeviceTree";
+import DeviceTree from '@/views/construction_safety/video_monitor/device/DeviceTree'
 import LivePlayer from "@liveqing/liveplayer";
-import {noticePushStream} from "@/api/deviceList";
+import {noticePushStream} from "@/api/modular/construction_safety/video_monitor/deviceList";
 import fscreen from 'fscreen'
 
 export default {
@@ -71,12 +66,8 @@ export default {
       cols: 1,
       colSpan: 24,
       playerRow: 1,
-      playerCol: 1,
-      visible: false
+      playerCol: 1
     }
-  },
-  created() {
-
   },
 
   watch: {
@@ -89,11 +80,6 @@ export default {
     }
   },
 
-  computed: {},
-
-  mounted() {
-
-  },
   methods: {
     getPlayerPos(rowIndex, colIndex) {
       console.log(rowIndex, colIndex)
@@ -139,16 +125,6 @@ export default {
       }
     },
 
-    afterVisibleChange(val) {
-    },
-
-    showDrawer() {
-      this.visible = true;
-    },
-    onClose() {
-      this.visible = false;
-    },
-
     changeSelected() {
       if (this.playerCol === this.cols) {
         this.playerRow++
@@ -174,17 +150,6 @@ export default {
 </script>
 
 <style scoped>
-.closeBtn {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid #e9e9e9;
-  padding: 10px 16px;
-  background: #fff;
-  text-align: right;
-  z-index: 1
-}
 
 .splitBtn {
   margin: 0 10px;
@@ -200,18 +165,6 @@ export default {
 
 .playerActive {
   border: 1px #f5222d solid;
-}
-
-.play-box {
-  background-color: #000000;
-  border: 2px solid #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.redborder {
-  border: 2px solid red !important;
 }
 
 </style>
