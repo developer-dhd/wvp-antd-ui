@@ -1,6 +1,7 @@
 <h1 align="center">WVP Antd UI</h1>
 <div align="center">
-  wvp-gb2818-pro 的 ant design vue ui
+  wvp-gb2818-pro 的 ant design vue ui, 如果前端代码中存在问题，欢迎PR。QQ交流群：690854210（ZLMediakit大群）901799015（wvp大群）
+  本人也在群里。
 </div>
 
 项目下载和运行
@@ -26,6 +27,11 @@ yarn run serve
 ```
 yarn run build
 ```
+
+## 部署
+
+部署教程：[点击查看](https://decoderx.cc)
+
 
 ## 浏览器兼容
 
