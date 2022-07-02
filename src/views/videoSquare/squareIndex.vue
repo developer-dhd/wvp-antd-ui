@@ -31,7 +31,7 @@
               <a-col :span="colSpan" v-for="indexCol in cols" :key="indexCol">
                 <div style="width: 100%; height: 100%" @click="getPlayerPos(indexRow, indexCol)">
                   <live-player
-                      :video-url="videoUrl['player-'+indexRow + '-' + indexCol]"
+                      :ref="'player-'+indexRow+'-'+indexCol"
                       :class="{playerActive: indexRow===playerRow && indexCol === playerCol}"
                       autoplay live fluent stretch/>
                 </div>
@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import DeviceTree from '@/views/construction_safety/video_monitor/device/DeviceTree'
+import DeviceTree from "@/views/device/DeviceTree";
 import LivePlayer from "@liveqing/liveplayer";
-import {noticePushStream} from "@/api/modular/construction_safety/video_monitor/deviceList";
+import {noticePushStream} from "@/api/deviceList";
 import fscreen from 'fscreen'
 
 export default {
@@ -103,8 +103,8 @@ export default {
       console.log('通知设备推流：' + deviceId + ' : ' + channelId)
       noticePushStream({deviceId: deviceId, channelId: channelId}).then(res => {
         if (res.code === 0) {
-          let videoURL = this.getUrlByStreamInfo(res.data)
-          this.videoUrl['player-' + this.playerRow + '-' + this.playerCol] = videoURL
+          let player = this.$refs['player-' + this.playerRow + '-' + this.playerCol][0]
+          player['videoUrl'] = this.getUrlByStreamInfo(res.data)
           this.changeSelected()
         } else {
           console.log(res.msg)
@@ -127,7 +127,13 @@ export default {
 
     changeSelected() {
       if (this.playerCol === this.cols) {
-        this.playerRow++
+        if (this.playerRow < this.rows) {
+          this.playerRow++
+          this.playerCol = 1
+        } else {
+          this.playerRow = 1
+          this.playerCol = 1
+        }
       } else {
         this.playerCol++
       }
