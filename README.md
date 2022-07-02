@@ -8,7 +8,7 @@
 
 - 拉取项目代码
 ```bash
-git clone https://gitee.com/rv_deng/wvp-antd-ui.git
+git clone https://github.com/developer-dhd/wvp-antd-ui.git
 cd wvp-antd-ui
 ```
 
