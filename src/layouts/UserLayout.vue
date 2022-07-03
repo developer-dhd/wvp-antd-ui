@@ -11,8 +11,8 @@
         <a-card-grid class="card-grid-left" :hoverable="false">
           <a-carousel autoplay>
             <img src="~@/assets/banner2.jpg" alt="bannner1">
-            <img src="~@/assets/banner3.jpg" alt="bannner2">
-            <img src="~@/assets/banner4.jpg" alt="bannner3">
+<!--            <img src="~@/assets/banner3.jpg" alt="bannner2">
+            <img src="~@/assets/banner4.jpg" alt="bannner3">-->
           </a-carousel>
         </a-card-grid>
         <a-card-grid class="card-grid-right" :hoverable="false">
