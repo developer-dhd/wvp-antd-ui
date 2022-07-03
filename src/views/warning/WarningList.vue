@@ -69,7 +69,15 @@
         </span>
 
         <span slot="alarmDescription" slot-scope="text, record">
-           <ellipsis :length="10" tooltip>{{ text }}</ellipsis>
+           <ellipsis :length="10" tooltip>{{ text?text:'无' }}</ellipsis>
+        </span>
+
+        <span slot="alarmTime" slot-scope="text, record">
+          {{text?text.replaceAll("T", " "): '无'}}
+        </span>
+
+        <span slot="alarmType" slot-scope="text, record">
+          {{formatAlarmType(record)}}
         </span>
       </s-table>
     </a-card>
@@ -106,7 +114,8 @@ const columns = [
   {
     title: '报警时间',
     dataIndex: 'alarmTime',
-    align: 'center'
+    align: 'center',
+    scopedSlots: {customRender: 'alarmTime'}
   },
   {
     title: '报警内容描述',
@@ -117,7 +126,8 @@ const columns = [
   {
     title: '报警类型',
     dataIndex: 'alarmType',
-    align: 'center'
+    align: 'center',
+    scopedSlots: {customRender: 'alarmType'}
   },
   {
     title: '操作',
@@ -149,6 +159,74 @@ export default {
   mounted() {
   },
   methods: {
+    formatAlarmType(row){
+      let sRt = '无'
+      if (row.alarmMethod === '2'){
+        switch (row.alarmTyp) {
+          case '1':
+            sRt = '视频丢失报警'
+            break;
+          case '2':
+            sRt = '设备防拆报警'
+            break;
+          case '3':
+            sRt = '存储设备磁盘满报警'
+            break;
+          case '5':
+            sRt = '设备高温报警'
+            break;
+        }
+      }else if (row.alarmMethod === '5'){
+        switch (row.alarmType){
+          case '1':
+            sRt = '人工视频报警'
+            break;
+          case '2':
+            sRt = '运动目标检测报警'
+            break;
+          case '3':
+            sRt = '遗留物检测报警'
+            break;
+          case '4':
+            sRt = '物体移除检测报警'
+            break;
+          case '5':
+            sRt = '绊线检测报警'
+            break;
+          case '6':
+            sRt = '入侵检测报警'
+            break;
+          case '7':
+            sRt = '逆行检测报警'
+            break;
+          case '8':
+            sRt = '徘徊检测报警'
+            break;
+          case '9':
+            sRt = '流量统计报警'
+            break;
+          case '10':
+            sRt = '密度检测报警'
+            break;
+          case '11':
+            sRt = '视频异常检测报警'
+            break;
+          case '12':
+            sRt = '快速移动报警'
+            break;
+        }
+      }else if (row.alarmMethod === '6'){
+        switch (row.alarmType) {
+          case '1':
+            sRt = '存储设备磁盘故障报警'
+            break;
+          case '2':
+            sRt = '存储设备风扇故障报警'
+            break;
+        }
+      }
+      return sRt
+    },
     calcAlarmPriorityColor(row) {
       let color = ''
       switch (row.alarmPriority) {
