@@ -32,7 +32,7 @@ yarn run build
 
 ## 部署
 
-部署教程：[点击查看](https://decoderx.cc)
+docker部署wvp-antd-ui教程：[点击查看](https://decoderx.cc/2022/07/03/docker%E9%83%A8%E7%BD%B2wvp-antd-ui%E6%95%99%E7%A8%8B/)
 
 
 ## 浏览器兼容
